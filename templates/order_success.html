@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}অর্ডার সফল - {{ order.order_code }} | {{ settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="py-8 sm:py-12">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+        
+        <!-- Receipt Card Container -->
+        <div class="bg-[#151928] border border-[#232942] rounded-3xl p-6 sm:p-9 shadow-2xl relative overflow-hidden">
+            
+            <!-- Success Icon & Header -->
+            <div class="text-center space-y-3 pb-6 border-b border-[#232942]">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-500/10 border-2 border-emerald-500/40 text-emerald-400 flex items-center justify-center text-3xl sm:text-4xl mx-auto shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/40 text-emerald-300 text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    অর্ডার সফলভাবে গৃহীত হয়েছে!
+                </div>
+
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-gaming">
+                    ধন্যবাদ! আপনার অর্ডার প্রক্রিয়াধীন
+                </h1>
+
+                <p class="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">
+                    আমাদের টিম আপনার পেমেন্ট ভেরিফাই করে <strong class="text-white">{{ settings.delivery_time }}</strong> এর মধ্যে একাউন্টে টপ-আপ পাঠিয়ে দেবে।
+                </p>
+            </div>
+
+            <!-- Order Code Box -->
+            <div class="my-6 bg-[#0d0f17] border border-purple-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+                <div>
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">অর্ডার কোড (Order Code)</span>
+                    <span class="text-xl sm:text-2xl font-mono font-black text-retro-cyan tracking-wider">{{ order.order_code }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="copyOrderCode('{{ order.order_code }}')" 
+                            class="bg-[#151928] hover:bg-[#1e2338] text-slate-200 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
+                        <i class="fa-regular fa-copy"></i> <span id="copyCodeText">কপি করুন</span>
+                    </button>
+                    <!-- Status Badge -->
+                    <span class="px-3 py-1.5 rounded-xl text-xs font-bold 
+                        {% if order.status == 'Completed' %}bg-emerald-950 text-emerald-300 border border-emerald-800
+                        {% elif order.status == 'Processing' %}bg-blue-950 text-blue-300 border border-blue-800
+                        {% elif order.status == 'Cancelled' %}bg-rose-950 text-rose-300 border border-rose-800
+                        {% else %}bg-amber-950 text-amber-300 border border-amber-800{% endif %}">
+                        {{ order.status }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Order Details Table -->
+            <div class="space-y-3 text-xs sm:text-sm text-slate-300 bg-[#0d0f17]/60 p-4 rounded-2xl border border-slate-800">
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">গেমের নাম:</span>
+                    <span class="font-bold text-white">{{ order.game_name }}</span>
+                </div>
+
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">প্যাকেজ:</span>
+                    <span class="font-bold text-retro-cyan">{{ order.package_name }}</span>
+                </div>
+
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">প্লেয়ার আইডি / তথ্য:</span>
+                    <span class="font-mono font-bold text-white">{{ order.player_info }}</span>
+                </div>
+
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">পরিশোধিত মূল্য:</span>
+                    <span class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-retro-gold to-amber-300 font-mono text-base">
+                        ৳{{ order.amount | int if order.amount == order.amount | int else order.amount }}
+                    </span>
+                </div>
+
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">পেমেন্ট মেথড:</span>
+                    <span class="font-semibold text-white">{{ order.payment_method }} ({{ order.payment_number }})</span>
+                </div>
+
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">প্রেরক নম্বর:</span>
+                    <span class="font-mono text-white">{{ order.sender_number }}</span>
+                </div>
+
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">TrxID:</span>
+                    <span class="font-mono font-bold text-pink-400 uppercase">{{ order.trx_id }}</span>
+                </div>
+
+                <div class="flex justify-between py-1.5 border-b border-slate-800/80">
+                    <span class="text-slate-400">আপনার WhatsApp:</span>
+                    <span class="font-mono text-white">{{ order.customer_whatsapp }}</span>
+                </div>
+
+                <div class="flex justify-between py-1.5">
+                    <span class="text-slate-400">অর্ডারের সময়:</span>
+                    <span class="text-slate-400">{{ order.created_at }}</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 space-y-3">
+                <a href="https://wa.me/88{{ settings.whatsapp_number }}?text=Hello%20Retro%20Topup,%20I%20have%20placed%20order%20{{ order.order_code }}.%20TrxID:%20{{ order.trx_id }}." target="_blank"
+                   class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-emerald-600/30 text-xs sm:text-sm transition">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>WhatsApp-এ দ্রুত আপডেট চান? মেসেজ দিন</span>
+                </a>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <a href="/track?q={{ order.order_code }}" 
+                       class="inline-flex items-center justify-center gap-2 bg-[#0d0f17] hover:bg-[#1f243b] text-retro-cyan border border-retro-cyan/30 py-3 rounded-xl text-xs font-semibold transition">
+                        <i class="fa-solid fa-truck-fast"></i> লাইভ ট্র্যাকিং
+                    </a>
+                    <a href="/" 
+                       class="inline-flex items-center justify-center gap-2 bg-[#0d0f17] hover:bg-[#1f243b] text-slate-300 border border-slate-700 py-3 rounded-xl text-xs font-semibold transition">
+                        <i class="fa-solid fa-house"></i> আরো টপ-আপ করুন
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function copyOrderCode(code) {
+        navigator.clipboard.writeText(code);
+        const txt = document.getElementById('copyCodeText');
+        txt.textContent = "কপি হয়েছে!";
+        setTimeout(() => { txt.textContent = "কপি করুন"; }, 2000);
+    }
+</script>
+{% endblock %}

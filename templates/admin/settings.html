@@ -1,0 +1,169 @@
+{% extends "admin/base.html" %}
+
+{% block title %}ওয়েবসাইট সেটিংস ও কাস্টমাইজেশন - অ্যাডমিন প্যানেল{% endblock %}
+
+{% block content %}
+<div class="space-y-8 max-w-4xl">
+    
+    <!-- Header -->
+    <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-gaming tracking-wide">
+            ওয়েবসাইট কাস্টমাইজেশন ও সেটিংস
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400">
+            সাইটের নাম, হোয়াটসঅ্যাপ নম্বর, নোটিস বার, হেডলাইন ও পাসওয়ার্ড পরিবর্তন করুন
+        </p>
+    </div>
+
+    {% if msg %}
+    <div class="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-800/50 text-emerald-300 text-xs flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span>{{ msg }}</span>
+    </div>
+    {% endif %}
+
+    <!-- General Settings Form -->
+    <div class="bg-[#151928] border border-[#232942] rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+        <div class="border-b border-[#232942] pb-4">
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-globe text-retro-cyan"></i> সাধারণ তথ্য ও যোগাযোগ সেটিংস
+            </h2>
+            <p class="text-xs text-slate-400">ওয়েবসাইটের ব্র্যান্ডিং ও কন্টাক্ট ইনফো</p>
+        </div>
+
+        <form action="/admin/settings/update" method="POST" class="space-y-4 text-xs">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">সাইটের নাম (Site Name) *</label>
+                    <input type="text" name="site_name" value="{{ settings.site_name }}" required 
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white font-bold">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">ট্যাগলাইন (Tagline)</label>
+                    <input type="text" name="tagline" value="{{ settings.tagline }}" required 
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">
+                </div>
+            </div>
+
+            <!-- Notice bar ticker text -->
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1 flex items-center gap-1.5">
+                    <i class="fa-solid fa-bullhorn text-retro-gold"></i>
+                    <span>স্ক্রোলিং নোটিস বার টেক্সট (Marquee Announcement) *</span>
+                </label>
+                <textarea name="site_notice" rows="2" required 
+                          class="w-full bg-[#0d0f17] border border-purple-500/40 focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">{{ settings.site_notice }}</textarea>
+                <span class="text-[10px] text-slate-500">সাইটের একদম উপরে লাল-বেগুনী বারে স্ক্রোল করে প্রদর্শিত হবে।</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1 flex items-center gap-1">
+                        <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+                        <span>WhatsApp নম্বর *</span>
+                    </label>
+                    <input type="text" name="whatsapp_number" value="{{ settings.whatsapp_number }}" required 
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-white font-mono font-bold">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">সাপোর্ট ফোন নম্বর *</label>
+                    <input type="text" name="support_phone" value="{{ settings.support_phone }}" required 
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white font-mono font-bold">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">ডেলিভারি সময় টেক্সট</label>
+                    <input type="text" name="delivery_time" value="{{ settings.delivery_time }}" required 
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">কাজের সময় (Working Hours)</label>
+                    <input type="text" name="working_hours" value="{{ settings.working_hours }}" required 
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">
+                </div>
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">হোম হিরো সেকশন টাইটেল (Hero Title)</label>
+                <input type="text" name="hero_title" value="{{ settings.hero_title }}" required 
+                       class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white font-gaming text-sm font-bold">
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">হোম হিরো সাব-টাইটেল (Hero Subtitle)</label>
+                <input type="text" name="hero_subtitle" value="{{ settings.hero_subtitle }}" required 
+                       class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">সাপোর্ট ইমেইল</label>
+                    <input type="email" name="contact_email" value="{{ settings.contact_email }}" required 
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">ফেসবুক পেজ লিংক</label>
+                    <input type="url" name="facebook_page" value="{{ settings.facebook_page }}" 
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">টেলিগ্রাম গ্রুপ লিংক</label>
+                    <input type="url" name="telegram_group" value="{{ settings.telegram_group }}" 
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-[#232942] flex justify-end">
+                <button type="submit" 
+                        class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-6 py-3 rounded-xl text-xs shadow-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>সকল সেটিংস সেভ করুন</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Security & Password Change Section -->
+    <div id="security" class="bg-[#151928] border border-[#232942] rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+        <div class="border-b border-[#232942] pb-4">
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-lock text-rose-400"></i> অ্যাডমিন পাসওয়ার্ড পরিবর্তন
+            </h2>
+            <p class="text-xs text-slate-400">আপনার অ্যাডমিন একাউন্টের নিরাপত্তা নিশ্চিত করতে নতুন পাসওয়ার্ড দিন</p>
+        </div>
+
+        <form action="/admin/change-password" method="POST" class="space-y-4 text-xs max-w-md">
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">বর্তমান পাসওয়ার্ড *</label>
+                <input type="password" name="current_password" required placeholder="বর্তমান পাসওয়ার্ড দিন" 
+                       class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">নতুন পাসওয়ার্ড *</label>
+                <input type="password" name="new_password" required placeholder="নতুন পাসওয়ার্ড দিন" 
+                       class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">নতুন পাসওয়ার্ড নিশ্চিত করুন *</label>
+                <input type="password" name="confirm_password" required placeholder="পুনরায় নতুন পাসওয়ার্ড দিন" 
+                       class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-3.5 py-2.5 text-white">
+            </div>
+
+            <button type="submit" 
+                    class="bg-rose-600 hover:bg-rose-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-key"></i>
+                <span>পাসওয়ার্ড আপডেট করুন</span>
+            </button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

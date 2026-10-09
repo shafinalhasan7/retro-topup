@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাডমিন লগইন | {{ settings.site_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Inter:wght@400;600;700&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', 'Hind Siliguri', sans-serif; background-color: #0b0d14; color: #e2e8f0; }
+        .font-gaming { font-family: 'Rajdhani', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 bg-[#0b0d14] relative overflow-hidden">
+    
+    <!-- Background glow elements -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="w-full max-w-md bg-[#151928] border border-[#232942] rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10">
+        
+        <!-- Header -->
+        <div class="text-center space-y-2 mb-8">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 via-pink-600 to-cyan-500 p-0.5 mx-auto shadow-xl">
+                <div class="w-full h-full bg-[#0d0f17] rounded-[14px] flex items-center justify-center">
+                    <i class="fa-solid fa-shield-halved text-2xl text-purple-400"></i>
+                </div>
+            </div>
+            <h1 class="text-2xl font-black font-gaming tracking-wider text-white uppercase pt-1">
+                {{ settings.site_name }}
+            </h1>
+            <p class="text-xs text-slate-400">অ্যাডমিন কন্ট্রোল প্যানেলে প্রবেশ করুন</p>
+        </div>
+
+        {% if error %}
+        <div class="mb-5 p-3 rounded-xl bg-rose-950/40 border border-rose-800/50 text-rose-300 text-xs flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation text-rose-400"></i>
+            <span>{{ error }}</span>
+        </div>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form action="/admin/login" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">ইউজারনেম (Username)</label>
+                <div class="relative">
+                    <input type="text" name="username" value="admin" required autofocus
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-4 py-2.5 pl-10 text-sm text-white placeholder-slate-500 focus:outline-none transition">
+                    <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-500 text-xs"></i>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">পাসওয়ার্ড (Password)</label>
+                <div class="relative">
+                    <input type="password" name="password" required placeholder="••••••••"
+                           class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-4 py-2.5 pl-10 text-sm text-white placeholder-slate-500 focus:outline-none transition">
+                    <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-500 text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Pre-configured Credentials Tip -->
+            <div class="p-3 bg-purple-950/20 border border-purple-800/30 rounded-xl text-[11px] text-purple-300 space-y-1">
+                <div class="font-bold text-white flex items-center gap-1.5">
+                    <i class="fa-solid fa-key text-retro-cyan"></i> ডিফল্ট অ্যাডমিন একাউন্ট:
+                </div>
+                <div>Username: <strong class="text-white font-mono">admin</strong></div>
+                <div>Password: <strong class="text-white font-mono">admin123</strong></div>
+                <div class="text-[10px] text-slate-400 mt-1">* লগইন করার পর সেটিংস পেজ থেকে যেকোনো সময় পাসওয়ার্ড পরিবর্তন করতে পারবেন।</div>
+            </div>
+
+            <button type="submit" 
+                    class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3 rounded-xl text-sm shadow-lg shadow-purple-600/30 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-right-to-bracket text-xs"></i>
+                <span>লগইন করুন</span>
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <a href="/" class="text-xs text-slate-400 hover:text-white transition flex items-center justify-center gap-1">
+                <i class="fa-solid fa-arrow-left text-[10px]"></i> পাবলিক ওয়েবসাইটে ফিরুন
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}অ্যাডমিন প্যানেল | {{ settings.site_name }}{% endblock %}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        retro: {
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            dark: '#0d0f17',
+                            card: '#151928',
+                            border: '#232942',
+                            cyan: '#00f0ff',
+                            gold: '#fbbf24',
+                            bkash: '#e2136e',
+                            nagad: '#f7941d'
+                        }
+                    },
+                    fontFamily: {
+                        gaming: ['Rajdhani', 'sans-serif'],
+                        sans: ['Inter', 'Hind Siliguri', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', 'Hind Siliguri', sans-serif; background-color: #0b0d14; color: #e2e8f0; }
+        .font-gaming { font-family: 'Rajdhani', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen bg-[#0b0d14] flex flex-col md:flex-row">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden bg-[#0d0f17] border-b border-[#232942] p-4 flex items-center justify-between">
+        <a href="/admin" class="flex items-center gap-2 font-gaming font-black text-xl text-white">
+            <span class="text-retro-cyan">RETRO</span> ADMIN
+        </a>
+        <div class="flex items-center gap-3">
+            <a href="/" target="_blank" class="text-xs text-purple-400"><i class="fa-solid fa-arrow-up-right-from-square"></i> সাইট</a>
+            <a href="/admin/logout" class="text-xs text-rose-400"><i class="fa-solid fa-power-off"></i> লগআউট</a>
+        </div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-64 bg-[#0d0f17] border-r border-[#232942] flex flex-col shrink-0">
+        <!-- Brand -->
+        <div class="p-5 border-b border-[#232942] hidden md:flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-600 to-cyan-500 p-0.5">
+                <div class="w-full h-full bg-[#0d0f17] rounded-[10px] flex items-center justify-center">
+                    <i class="fa-solid fa-shield-halved text-retro-cyan"></i>
+                </div>
+            </div>
+            <div>
+                <div class="font-gaming font-black text-lg text-white tracking-wider">{{ settings.site_name }}</div>
+                <div class="text-[10px] text-purple-400 uppercase tracking-widest font-bold">Admin Panel</div>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="p-3 space-y-1.5 flex-1">
+            <a href="/admin" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:text-white hover:bg-[#151928] transition {% if request.url.path == '/admin' %}bg-purple-600/20 text-white border border-purple-500/30{% endif %}">
+                <i class="fa-solid fa-chart-pie w-4 text-purple-400"></i> ড্যাশবোর্ড
+            </a>
+
+            <a href="/admin/orders" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:text-white hover:bg-[#151928] transition {% if request.url.path == '/admin/orders' %}bg-purple-600/20 text-white border border-purple-500/30{% endif %}">
+                <i class="fa-solid fa-receipt w-4 text-retro-cyan"></i> অর্ডারসমূহ
+            </a>
+
+            <a href="/admin/products" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:text-white hover:bg-[#151928] transition {% if '/admin/products' in request.url.path %}bg-purple-600/20 text-white border border-purple-500/30{% endif %}">
+                <i class="fa-solid fa-gamepad w-4 text-emerald-400"></i> গেম ও প্যাকেজ
+            </a>
+
+            <a href="/admin/payments" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:text-white hover:bg-[#151928] transition {% if request.url.path == '/admin/payments' %}bg-purple-600/20 text-white border border-purple-500/30{% endif %}">
+                <i class="fa-solid fa-money-bill-transfer w-4 text-pink-400"></i> পেমেন্ট মেথড ও নম্বর
+            </a>
+
+            <a href="/admin/settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 hover:text-white hover:bg-[#151928] transition {% if request.url.path == '/admin/settings' %}bg-purple-600/20 text-white border border-purple-500/30{% endif %}">
+                <i class="fa-solid fa-sliders w-4 text-retro-gold"></i> ওয়েবসাইট কাস্টমাইজ
+            </a>
+        </nav>
+
+        <!-- Bottom User / External link -->
+        <div class="p-3 border-t border-[#232942] space-y-1">
+            <a href="/" target="_blank" class="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-slate-400 hover:text-white hover:bg-[#151928] transition">
+                <i class="fa-solid fa-arrow-up-right-from-square text-[11px] text-cyan-400"></i> পাবলিক ওয়েবসাইট দেখুন
+            </a>
+            <a href="/admin/logout" class="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-rose-400 hover:bg-rose-950/30 transition">
+                <i class="fa-solid fa-arrow-right-from-bracket text-[11px]"></i> লগআউট ({{ admin_user }})
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

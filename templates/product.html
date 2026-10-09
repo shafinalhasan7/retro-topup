@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+
+{% block title %}{{ game.name }} Top-Up - {{ settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="py-6 sm:py-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-2 text-xs text-slate-400 mb-6">
+            <a href="/" class="hover:text-white transition">হোম</a>
+            <span>/</span>
+            <a href="/#games-section" class="hover:text-white transition">গেমসমূহ</a>
+            <span>/</span>
+            <span class="text-retro-cyan font-medium">{{ game.name }}</span>
+        </nav>
+
+        <!-- Product Banner Header -->
+        <div class="bg-[#151928] border border-[#232942] rounded-3xl p-5 sm:p-7 mb-8 relative overflow-hidden shadow-2xl">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 relative z-10">
+                <!-- Game Icon/Thumbnail -->
+                <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-purple-500/30 shrink-0 shadow-lg relative bg-slate-900">
+                    <img src="{{ game.image_url }}" alt="{{ game.name }}" class="w-full h-full object-cover">
+                    {% if game.badge %}
+                    <span class="absolute top-1 left-1 bg-pink-600 text-[9px] font-extrabold px-1.5 py-0.5 rounded text-white shadow">
+                        {{ game.badge }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <!-- Info -->
+                <div class="flex-1 text-center sm:text-left space-y-2">
+                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-purple-400 bg-purple-950/60 px-2.5 py-0.5 rounded-full border border-purple-800/40">
+                            {{ game.category }}
+                        </span>
+                        <span class="text-[11px] font-bold text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800/40 flex items-center gap-1">
+                            <i class="fa-solid fa-bolt text-[10px]"></i> ডেলিভারি: {{ game.delivery_time }}
+                        </span>
+                        <span class="text-[11px] font-bold text-retro-cyan bg-cyan-950/60 px-2.5 py-0.5 rounded-full border border-cyan-800/40">
+                            ১০০% নিরাপদ
+                        </span>
+                    </div>
+
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-gaming tracking-wide">
+                        {{ game.name }}
+                    </h1>
+
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl">
+                        {{ game.description or 'সরাসরি প্লেয়ার আইডি দিয়ে তাৎক্ষণিক টপ-আপ নিন। ২ থেকে ১০ মিনিটের মধ্যে ডায়মন্ড/ইউসি আপনার একাউন্টে পৌঁছে যাবে।' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Order Form -->
+        <form action="/order/submit" method="POST" id="orderForm" class="space-y-8">
+            <input type="hidden" name="game_id" value="{{ game.id }}">
+            <input type="hidden" name="package_id" id="selectedPackageId" value="{{ packages[0].id if packages else '' }}">
+            <input type="hidden" name="payment_method" id="selectedPaymentMethod" value="{{ payment_methods[0].name if payment_methods else 'bKash' }}">
+
+            <!-- STEP 1: Account Information -->
+            <div class="bg-[#151928] border border-[#232942] rounded-3xl p-5 sm:p-7 shadow-xl">
+                <div class="flex items-center gap-3 mb-5 border-b border-[#232942] pb-4">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow">
+                        ১
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-white">একাউন্ট তথ্য দিন (Account Info)</h2>
+                        <p class="text-xs text-slate-400">সঠিক তথ্য দিন যাতে সহজে ডায়মন্ড/ইউসি ডেলিভারি হতে পারে</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 max-w-xl">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
+                            <span>{{ game.input_label }} <span class="text-red-400">*</span></span>
+                            {% if game.instructions %}
+                            <button type="button" onclick="document.getElementById('guideModal').classList.toggle('hidden')" class="text-[11px] text-retro-cyan hover:underline flex items-center gap-1">
+                                <i class="fa-solid fa-circle-info"></i> আইডি কোথায় পাবেন?
+                            </button>
+                            {% endif %}
+                        </label>
+                        <input type="text" name="player_info" id="playerInfoInput" required 
+                               placeholder="{{ game.input_placeholder }}"
+                               class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none transition">
+                    </div>
+
+                    {% if game.instructions %}
+                    <div id="guideModal" class="p-3.5 rounded-xl bg-purple-950/30 border border-purple-800/40 text-xs text-purple-200 flex items-start gap-2.5">
+                        <i class="fa-solid fa-lightbulb text-retro-gold text-sm mt-0.5 shrink-0"></i>
+                        <p class="leading-relaxed">{{ game.instructions }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- STEP 2: Package Selection -->
+            <div class="bg-[#151928] border border-[#232942] rounded-3xl p-5 sm:p-7 shadow-xl">
+                <div class="flex items-center gap-3 mb-5 border-b border-[#232942] pb-4">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-600 to-teal-600 text-white flex items-center justify-center font-bold text-sm shadow">
+                        ২
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-white">প্যাকেজ নির্বাচন করুন (Select Package)</h2>
+                        <p class="text-xs text-slate-400">পছন্দের আইটেম সিলেক্ট করুন</p>
+                    </div>
+                </div>
+
+                <!-- Package Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                    {% for pkg in packages %}
+                    <div class="package-card relative p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between 
+                                {% if loop.first %}border-purple-500 bg-purple-950/20 shadow-lg shadow-purple-950/40{% else %}border-[#232942] bg-[#0d0f17] hover:border-slate-700{% endif %}"
+                         data-id="{{ pkg.id }}"
+                         data-name="{{ pkg.name }}"
+                         data-price="{{ pkg.price }}"
+                         onclick="selectPackage(this, '{{ pkg.id }}', '{{ pkg.name }}', {{ pkg.price }})">
+                        
+                        <!-- Badge -->
+                        {% if pkg.badge %}
+                        <span class="absolute -top-2.5 right-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full shadow">
+                            {{ pkg.badge }}
+                        </span>
+                        {% endif %}
+
+                        <div>
+                            <div class="w-6 h-6 rounded-full bg-purple-500/10 text-retro-cyan flex items-center justify-center text-xs mb-2">
+                                <i class="fa-solid fa-gem"></i>
+                            </div>
+                            <h4 class="text-xs sm:text-sm font-bold text-white leading-tight">
+                                {{ pkg.name }}
+                            </h4>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-[#232942]/60 flex items-baseline justify-between">
+                            <div>
+                                {% if pkg.original_price and pkg.original_price > pkg.price %}
+                                <span class="text-[10px] text-slate-500 line-through mr-1">৳{{ pkg.original_price | int }}</span>
+                                {% endif %}
+                                <span class="text-sm sm:text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-retro-gold to-amber-300">
+                                    ৳{{ pkg.price | int if pkg.price == pkg.price | int else pkg.price }}
+                                </span>
+                            </div>
+                            <span class="package-check w-4 h-4 rounded-full border border-purple-500 flex items-center justify-center text-[10px] text-purple-400 {% if not loop.first %}opacity-0{% endif %}">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- STEP 3: Payment Method & Payment Details -->
+            <div class="bg-[#151928] border border-[#232942] rounded-3xl p-5 sm:p-7 shadow-xl">
+                <div class="flex items-center gap-3 mb-5 border-b border-[#232942] pb-4">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-600 to-rose-600 text-white flex items-center justify-center font-bold text-sm shadow">
+                        ৩
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-white">পেমেন্ট মেথড ও তথ্য (Payment Details)</h2>
+                        <p class="text-xs text-slate-400">বিকাশ বা নগদ এ Send Money করে TrxID দিন</p>
+                    </div>
+                </div>
+
+                <!-- Payment Method Tabs -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+                    {% for pm in payment_methods %}
+                    <button type="button" 
+                            class="payment-btn p-3.5 sm:p-4 rounded-2xl border-2 flex items-center gap-3 text-left transition-all
+                                   {% if loop.first %}border-pink-500 bg-pink-950/20 text-white{% else %}border-[#232942] bg-[#0d0f17] text-slate-400 hover:border-slate-700{% endif %}"
+                            data-name="{{ pm.name }}"
+                            data-number="{{ pm.number }}"
+                            data-instructions="{{ pm.instructions }}"
+                            onclick="selectPayment(this, '{{ pm.name }}', '{{ pm.number }}', `{{ pm.instructions }}`)">
+                        
+                        <div class="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-white text-xs shrink-0" 
+                             style="background-color: {{ pm.logo_color or '#e2136e' }};">
+                            {% if pm.name == 'bKash' %}
+                            <i class="fa-solid fa-paper-plane"></i>
+                            {% elif pm.name == 'Nagad' %}
+                            <i class="fa-solid fa-wallet"></i>
+                            {% else %}
+                            <i class="fa-solid fa-money-bill"></i>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <div class="text-xs sm:text-sm font-bold text-white">{{ pm.name }}</div>
+                            <div class="text-[10px] text-slate-400">{{ pm.type }}</div>
+                        </div>
+                    </button>
+                    {% endfor %}
+                </div>
+
+                <!-- Active Payment Method Instructions Box -->
+                <div class="bg-[#0d0f17] border border-[#232942] rounded-2xl p-5 mb-6 space-y-4">
+                    
+                    <!-- Number and Amount Box with Copy Buttons -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Number Box -->
+                        <div class="bg-[#151928] p-3.5 rounded-xl border border-pink-500/30 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-pink-400 font-semibold block uppercase">পেমেন্ট নম্বর (Send Money)</span>
+                                <span id="displayPaymentNumber" class="text-base sm:text-lg font-mono font-black text-white tracking-wider">
+                                    {{ payment_methods[0].number if payment_methods else '01925915240' }}
+                                </span>
+                            </div>
+                            <button type="button" onclick="copyNumber()" 
+                                    class="bg-pink-600/20 hover:bg-pink-600/40 text-pink-300 border border-pink-500/40 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+                                <i class="fa-regular fa-copy"></i> <span id="copyNumText">কপি</span>
+                            </button>
+                        </div>
+
+                        <!-- Amount Box -->
+                        <div class="bg-[#151928] p-3.5 rounded-xl border border-retro-gold/30 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-retro-gold font-semibold block uppercase">পাঠানোর পরিমাণ</span>
+                                <span id="displayAmount" class="text-base sm:text-lg font-mono font-black text-white tracking-wider">
+                                    ৳{{ packages[0].price | int if packages else 0 }}
+                                </span>
+                            </div>
+                            <button type="button" onclick="copyAmount()" 
+                                    class="bg-amber-600/20 hover:bg-amber-600/40 text-amber-300 border border-amber-500/40 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+                                <i class="fa-regular fa-copy"></i> <span id="copyAmountText">কপি</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step by step Bengali guide -->
+                    <div class="text-xs text-slate-300 bg-[#151928]/60 p-3.5 rounded-xl border border-slate-800 space-y-1.5 leading-relaxed">
+                        <div class="font-bold text-white flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-exclamation text-retro-cyan"></i> নিয়মাবলী:
+                        </div>
+                        <p id="displayInstructions" class="whitespace-pre-line text-slate-300 text-[11px] sm:text-xs">
+                            {{ payment_methods[0].instructions if payment_methods else 'বিকাশ বা নগদ থেকে Send Money করুন এবং TrxID নিচে দিন।' }}
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Form Fields: Sender Number, TrxID, WhatsApp -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
+                            আপনার বিকাশ/নগদ নম্বর (যেটি থেকে টাকা পাঠিয়েছেন) <span class="text-red-400">*</span>
+                        </label>
+                        <input type="text" name="sender_number" required 
+                               placeholder="e.g. 017XXXXXXXX"
+                               class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
+                            ট্রানজেকশন আইডি (TrxID) <span class="text-red-400">*</span>
+                        </label>
+                        <input type="text" name="trx_id" required 
+                               placeholder="e.g. BL92A8ZK91"
+                               class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white uppercase placeholder-slate-500 focus:outline-none font-mono transition">
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">
+                            আপনার WhatsApp নম্বর (আপডেট ও ডেলিভারির জন্য) <span class="text-red-400">*</span>
+                        </label>
+                        <input type="text" name="customer_whatsapp" required 
+                               placeholder="e.g. 01925915240"
+                               class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none transition">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sticky / Bottom Order Summary Bar -->
+            <div class="bg-gradient-to-r from-purple-950 via-[#151928] to-slate-900 border border-purple-500/40 rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-1 text-center md:text-left">
+                    <span class="text-[10px] font-bold text-retro-cyan uppercase tracking-wider">অর্ডার সারাংশ (Order Summary)</span>
+                    <div class="text-base sm:text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+                        <span id="summaryPackageName">{{ packages[0].name if packages else '' }}</span>
+                        <span class="text-slate-500">•</span>
+                        <span id="summaryPrice" class="text-transparent bg-clip-text bg-gradient-to-r from-retro-gold to-amber-300 font-extrabold font-mono text-xl sm:text-2xl">
+                            ৳{{ packages[0].price | int if packages else 0 }}
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-slate-400">
+                        ডেলিভারি সময়: <span class="text-emerald-400 font-semibold">{{ game.delivery_time }}</span> | কোনো জিজ্ঞাসা থাকলে WhatsApp: <strong class="text-white">{{ settings.whatsapp_number }}</strong>
+                    </p>
+                </div>
+
+                <button type="submit" id="submitOrderBtn" 
+                        class="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 hover:from-purple-500 hover:to-rose-500 text-white font-extrabold px-9 py-4 rounded-2xl shadow-xl shadow-purple-600/40 hover:shadow-pink-500/40 transition-all text-sm sm:text-base group">
+                    <i class="fa-solid fa-lock text-xs"></i>
+                    <span>অর্ডার নিশ্চিত করুন (Confirm Order)</span>
+                    <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    let currentSelectedPrice = {{ packages[0].price if packages else 0 }};
+    let currentPaymentNumber = "{{ payment_methods[0].number if payment_methods else '01925915240' }}";
+
+    function selectPackage(card, id, name, price) {
+        document.querySelectorAll('.package-card').forEach(el => {
+            el.classList.remove('border-purple-500', 'bg-purple-950/20', 'shadow-lg', 'shadow-purple-950/40');
+            el.classList.add('border-[#232942]', 'bg-[#0d0f17]');
+            el.querySelector('.package-check').classList.add('opacity-0');
+        });
+
+        card.classList.add('border-purple-500', 'bg-purple-950/20', 'shadow-lg', 'shadow-purple-950/40');
+        card.classList.remove('border-[#232942]', 'bg-[#0d0f17]');
+        card.querySelector('.package-check').classList.remove('opacity-0');
+
+        document.getElementById('selectedPackageId').value = id;
+        document.getElementById('summaryPackageName').textContent = name;
+        document.getElementById('summaryPrice').textContent = `৳${price}`;
+        document.getElementById('displayAmount').textContent = `৳${price}`;
+        currentSelectedPrice = price;
+    }
+
+    function selectPayment(btn, name, number, instructions) {
+        document.querySelectorAll('.payment-btn').forEach(el => {
+            el.classList.remove('border-pink-500', 'bg-pink-950/20', 'text-white');
+            el.classList.add('border-[#232942]', 'bg-[#0d0f17]', 'text-slate-400');
+        });
+
+        btn.classList.add('border-pink-500', 'bg-pink-950/20', 'text-white');
+        btn.classList.remove('border-[#232942]', 'bg-[#0d0f17]', 'text-slate-400');
+
+        document.getElementById('selectedPaymentMethod').value = name;
+        document.getElementById('displayPaymentNumber').textContent = number;
+        document.getElementById('displayInstructions').textContent = instructions;
+        currentPaymentNumber = number;
+    }
+
+    function copyNumber() {
+        navigator.clipboard.writeText(currentPaymentNumber);
+        const txt = document.getElementById('copyNumText');
+        txt.textContent = "কপি হয়েছে!";
+        setTimeout(() => { txt.textContent = "কপি"; }, 2000);
+    }
+
+    function copyAmount() {
+        navigator.clipboard.writeText(currentSelectedPrice);
+        const txt = document.getElementById('copyAmountText');
+        txt.textContent = "কপি হয়েছে!";
+        setTimeout(() => { txt.textContent = "কপি"; }, 2000);
+    }
+
+    // Client side form validation
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+        const playerInfo = document.getElementById('playerInfoInput').value.trim();
+        if (!playerInfo) {
+            e.preventDefault();
+            alert("অনুগ্রহ করে আপনার প্লেয়ার আইডি বা তথ্য প্রদান করুন।");
+            return;
+        }
+        const btn = document.getElementById('submitOrderBtn');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> অর্ডার প্রসেসিং হচ্ছে...';
+        btn.disabled = true;
+    });
+</script>
+{% endblock %}

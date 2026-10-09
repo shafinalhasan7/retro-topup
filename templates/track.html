@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}অর্ডার ট্র্যাকিং - {{ settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="py-8 sm:py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+        
+        <!-- Header -->
+        <div class="text-center space-y-2 mb-8">
+            <span class="text-xs font-bold text-retro-cyan uppercase tracking-wider">লাইভ স্ট্যাটাস</span>
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-white font-gaming tracking-wide">
+                অর্ডার ট্র্যাক করুন
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-400 max-w-md mx-auto">
+                আপনার অর্ডার কোড (e.g. RT-12345), মোবাইল নম্বর বা TrxID দিয়ে লাইভ স্ট্যাটাস জানুন
+            </p>
+        </div>
+
+        <!-- Search Form -->
+        <form action="/track" method="GET" class="bg-[#151928] border border-[#232942] rounded-2xl p-3 sm:p-4 mb-8 shadow-xl flex flex-col sm:flex-row gap-3">
+            <div class="relative flex-1">
+                <input type="text" name="q" value="{{ search_query }}" required
+                       placeholder="অর্ডার কোড, ফোন নম্বর অথবা TrxID লিখুন..." 
+                       class="w-full bg-[#0d0f17] border border-[#232942] focus:border-purple-500 rounded-xl px-4 py-3 pl-10 text-sm text-white placeholder-slate-500 focus:outline-none transition">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-4 text-slate-500 text-xs"></i>
+            </div>
+            <button type="submit" 
+                    class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-md transition flex items-center justify-center gap-2 shrink-0">
+                <i class="fa-solid fa-bolt"></i>
+                <span>সার্চ করুন</span>
+            </button>
+        </form>
+
+        <!-- Search Results -->
+        {% if searched %}
+            {% if orders %}
+                <div class="space-y-6">
+                    {% for order in orders %}
+                    <div class="bg-[#151928] border border-[#232942] rounded-3xl p-5 sm:p-7 shadow-xl space-y-6">
+                        
+                        <!-- Order Header -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#232942]">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">অর্ডার কোড</span>
+                                <span class="text-xl font-mono font-black text-retro-cyan">{{ order.order_code }}</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs text-slate-400">{{ order.created_at }}</span>
+                                <span class="px-3 py-1 rounded-xl text-xs font-bold 
+                                    {% if order.status == 'Completed' %}bg-emerald-950 text-emerald-300 border border-emerald-800
+                                    {% elif order.status == 'Processing' %}bg-blue-950 text-blue-300 border border-blue-800
+                                    {% elif order.status == 'Cancelled' %}bg-rose-950 text-rose-300 border border-rose-800
+                                    {% else %}bg-amber-950 text-amber-300 border border-amber-800{% endif %}">
+                                    {{ order.status }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Timeline -->
+                        <div class="py-2">
+                            <div class="grid grid-cols-4 gap-2 text-center relative">
+                                <!-- Connector line -->
+                                <div class="absolute top-4 left-[12%] right-[12%] h-1 bg-[#232942] -z-0">
+                                    <div class="h-full bg-gradient-to-r from-purple-500 to-emerald-500 transition-all duration-500" 
+                                         style="width: {% if order.status == 'Completed' %}100%{% elif order.status == 'Processing' %}66%{% elif order.status == 'Pending' %}33%{% else %}10%{% endif %};">
+                                    </div>
+                                </div>
+
+                                <!-- Step 1 -->
+                                <div class="relative z-10 space-y-2">
+                                    <div class="w-8 h-8 rounded-full mx-auto flex items-center justify-center text-xs font-bold
+                                                bg-purple-600 text-white shadow-lg shadow-purple-600/40">
+                                        <i class="fa-solid fa-check"></i>
+                                    </div>
+                                    <div class="text-[11px] font-semibold text-white">অর্ডার গৃহীত</div>
+                                </div>
+
+                                <!-- Step 2 -->
+                                <div class="relative z-10 space-y-2">
+                                    <div class="w-8 h-8 rounded-full mx-auto flex items-center justify-center text-xs font-bold
+                                                {% if order.status in ['Processing', 'Completed'] %}bg-indigo-600 text-white shadow-lg{% else %}bg-[#1e2338] text-slate-400{% endif %}">
+                                        {% if order.status in ['Processing', 'Completed'] %}<i class="fa-solid fa-check"></i>{% else %}2{% endif %}
+                                    </div>
+                                    <div class="text-[11px] font-semibold {% if order.status in ['Processing', 'Completed'] %}text-white{% else %}text-slate-500{% endif %}">পেমেন্ট ভেরিফাই</div>
+                                </div>
+
+                                <!-- Step 3 -->
+                                <div class="relative z-10 space-y-2">
+                                    <div class="w-8 h-8 rounded-full mx-auto flex items-center justify-center text-xs font-bold
+                                                {% if order.status in ['Processing', 'Completed'] %}bg-cyan-600 text-white shadow-lg{% else %}bg-[#1e2338] text-slate-400{% endif %}">
+                                        {% if order.status == 'Completed' %}<i class="fa-solid fa-check"></i>{% elif order.status == 'Processing' %}<i class="fa-solid fa-spinner fa-spin"></i>{% else %}3{% endif %}
+                                    </div>
+                                    <div class="text-[11px] font-semibold {% if order.status in ['Processing', 'Completed'] %}text-white{% else %}text-slate-500{% endif %}">টপ-আপ পাঠানো</div>
+                                </div>
+
+                                <!-- Step 4 -->
+                                <div class="relative z-10 space-y-2">
+                                    <div class="w-8 h-8 rounded-full mx-auto flex items-center justify-center text-xs font-bold
+                                                {% if order.status == 'Completed' %}bg-emerald-600 text-white shadow-lg shadow-emerald-600/40{% else %}bg-[#1e2338] text-slate-400{% endif %}">
+                                        {% if order.status == 'Completed' %}<i class="fa-solid fa-check-double"></i>{% else %}4{% endif %}
+                                    </div>
+                                    <div class="text-[11px] font-semibold {% if order.status == 'Completed' %}text-emerald-400{% else %}text-slate-500{% endif %}">সম্পন্ন</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order Info Grid -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#0d0f17] p-4 rounded-2xl border border-slate-800 text-xs">
+                            <div>
+                                <span class="text-slate-500 block">গেম</span>
+                                <span class="font-bold text-white">{{ order.game_name }}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">প্যাকেজ</span>
+                                <span class="font-bold text-retro-cyan">{{ order.package_name }}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">প্লেয়ার আইডি</span>
+                                <span class="font-mono font-bold text-white">{{ order.player_info }}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">মূল্য</span>
+                                <span class="font-bold text-retro-gold">৳{{ order.amount | int }}</span>
+                            </div>
+                        </div>
+
+                        {% if order.admin_note %}
+                        <div class="p-3 bg-purple-950/20 border border-purple-800/30 rounded-xl text-xs text-purple-200">
+                            <strong>এডমিন বার্তা:</strong> {{ order.admin_note }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Support link -->
+                        <div class="flex items-center justify-between pt-2">
+                            <span class="text-xs text-slate-400">কোনো সমস্যা হলে:</span>
+                            <a href="https://wa.me/88{{ settings.whatsapp_number }}?text=Hello%20Retro%20Topup,%20Regarding%20order%20{{ order.order_code }}" target="_blank"
+                               class="text-xs text-emerald-400 hover:underline flex items-center gap-1 font-semibold">
+                                <i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপে জানান
+                            </a>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-12 bg-[#151928] border border-[#232942] rounded-3xl p-8 space-y-3">
+                    <i class="fa-solid fa-magnifying-glass-chart text-4xl text-slate-500"></i>
+                    <h3 class="text-base font-bold text-white">কোনো অর্ডার পাওয়া যায়নি</h3>
+                    <p class="text-xs text-slate-400 max-w-sm mx-auto">
+                        আপনার দেওয়া তথ্য সঠিক আছে কি না চেক করুন, অথবা সরাসরি আমাদের WhatsApp সাপোর্টে যোগাযোগ করুন।
+                    </p>
+                    <a href="https://wa.me/88{{ settings.whatsapp_number }}" target="_blank" 
+                       class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp সাপোর্ট
+                    </a>
+                </div>
+            {% endif %}
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

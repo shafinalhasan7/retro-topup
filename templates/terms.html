@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}শর্তাবলী ও নীতিমালা - {{ settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="py-10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="bg-[#151928] border border-[#232942] rounded-3xl p-6 sm:p-10 space-y-6">
+            <span class="text-xs font-bold text-retro-cyan uppercase tracking-wider">শর্তাবলী</span>
+            <h1 class="text-3xl font-extrabold text-white font-gaming">শর্তাবলী ও রিফান্ড পলিসি</h1>
+            
+            <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                <div>
+                    <h4 class="font-bold text-white mb-1">১. সঠিক তথ্য প্রদান</h4>
+                    <p>অর্ডার করার সময় গ্রাহককে তার সঠিক গেম প্লেয়ার আইডি (UID) বা ইউজারনেম প্রদান করতে হবে। ভুল আইডি দেওয়ার কারণে ভুল একাউন্টে টপ-আপ চলে গেলে Retro Topup কর্তৃপক্ষ দায়ী থাকবে না।</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-1">২. পেমেন্ট ও TrxID</h4>
+                    <p>আমাদের অফিসিয়াল বিকাশ ও নগদ নাম্বারে (<strong class="text-white">{{ settings.bkash_number }}</strong>) Send Money করার পর সঠিক ট্রানজেকশন আইডি (TrxID) প্রদান করতে হবে। ভুয়া TrxID দিলে অর্ডার বাতিল করা হবে।</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-1">৩. ডেলিভারি সময়সীমা</h4>
+                    <p>সাধারণত ২ থেকে ১০ মিনিটের মধ্যে অর্ডার সম্পন্ন হয়। সার্ভার বা ইন্টারনেট ত্রুটির ক্ষেত্রে ডেলিভারি সম্পন্ন হতে সর্বোচ্চ ৩০ মিনিট পর্যন্ত সময় লাগতে পারে।</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-1">৪. রিফান্ড পলিসি</h4>
+                    <p>যদি কোনো কারণে আমাদের পক্ষে টপ-আপ প্রদান করা সম্ভব না হয়, তবে সম্পূর্ণ অর্থ গ্রাহকের বিকাশ বা নগদ একাউন্টে ২৪ ঘণ্টার মধ্যে রিফান্ড প্রদান করা হবে।</p>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-800">
+                <a href="/" class="inline-flex items-center gap-2 bg-[#0d0f17] border border-slate-700 hover:bg-slate-800 text-slate-200 px-6 py-3 rounded-xl text-xs font-semibold transition">
+                    হোম পেজে ফিরুন
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

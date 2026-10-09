@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}আমাদের সম্পর্কে - {{ settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="py-10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="bg-[#151928] border border-[#232942] rounded-3xl p-6 sm:p-10 space-y-6">
+            <span class="text-xs font-bold text-retro-cyan uppercase tracking-wider">পরিচিতি</span>
+            <h1 class="text-3xl font-extrabold text-white font-gaming">Retro Topup সম্পর্কে</h1>
+            
+            <p class="text-slate-300 text-sm leading-relaxed">
+                <strong>Retro Topup</strong> বাংলাদেশের গেমারদের জন্য সবচেয়ে বিশ্বস্ত, নিরাপদ ও দ্রুততম গেম টপ-আপ প্ল্যাটফর্ম। আমরা ফ্রি ফায়ার ডায়মন্ড, পাবজি ইউসি, মোবাইল লিজেন্ডস ডায়মন্ড, কল অব ডিউটি সিপি এবং বিভিন্ন জনপ্রিয় গিফট কার্ডের সবচেয়ে সাশ্রয়ী মূল্যে ইনস্ট্যান্ট ডেলিভারি প্রদান করে থাকি।
+            </p>
+
+            <h3 class="text-lg font-bold text-white pt-4">আমাদের বিশেষত্ব:</h3>
+            <ul class="space-y-3 text-sm text-slate-300 list-disc list-inside">
+                <li><strong>তাত্ক্ষণিক ডেলিভারি:</strong> অর্ডার করার ২ থেকে ১০ মিনিটের মধ্যে স্বয়ংক্রিয় ও দ্রুততম টপ-আপ।</li>
+                <li><strong>সহজ পেমেন্ট:</strong> বিকাশ ও নগদ দিয়ে যেকোনো সময় ঘরে বসেই পেমেন্ট সুবিধা (হটলাইন: {{ settings.bkash_number }})।</li>
+                <li><strong>২৪/৭ কাস্টমার সাপোর্ট:</strong> সার্বক্ষণিক WhatsApp সাপোর্ট ({{ settings.whatsapp_number }})।</li>
+                <li><strong>নিরাপত্তা ও গোপনীয়তা:</strong> আপনার একাউন্টের তথ্য শতভাগ সুরক্ষিত।</li>
+            </ul>
+
+            <div class="pt-6 border-t border-slate-800 flex items-center gap-4">
+                <a href="https://wa.me/88{{ settings.whatsapp_number }}" target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-xl text-xs transition">
+                    <i class="fa-brands fa-whatsapp text-base"></i> WhatsApp এ কথা বলুন
+                </a>
+                <a href="/" class="inline-flex items-center gap-2 bg-[#0d0f17] border border-slate-700 hover:bg-slate-800 text-slate-200 px-6 py-3 rounded-xl text-xs font-semibold transition">
+                    হোম পেজে ফিরুন
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

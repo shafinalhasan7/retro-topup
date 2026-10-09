@@ -1,0 +1,174 @@
+{% extends "admin/base.html" %}
+
+{% block title %}গেম ও প্রোডাক্টসমূহ - অ্যাডমিন প্যানেল{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    
+    <!-- Header with Add Button -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-gaming tracking-wide">
+                গেম ও প্রোডাক্ট ব্যবস্থাপনা
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-400">সাইটে নতুন গেম যুক্ত করুন অথবা বিদ্যমান গেমের তথ্য ও প্যাকেজ এডিট করুন</p>
+        </div>
+
+        <button type="button" onclick="document.getElementById('addGameModal').classList.remove('hidden')" 
+                class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-lg transition">
+            <i class="fa-solid fa-plus"></i> নতুন গেম যোগ করুন
+        </button>
+    </div>
+
+    <!-- Games Grid / List -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {% for game in games %}
+        <div class="bg-[#151928] border border-[#232942] rounded-3xl p-5 shadow-xl flex flex-col justify-between space-y-4 hover:border-purple-500/30 transition">
+            
+            <!-- Top: Image & Info -->
+            <div class="flex items-start gap-4">
+                <div class="w-16 h-16 rounded-2xl overflow-hidden bg-slate-900 shrink-0 border border-slate-700">
+                    <img src="{{ game.image_url }}" alt="{{ game.name }}" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-1.5 mb-1">
+                        <span class="text-[10px] font-bold text-purple-400 uppercase bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800/40">{{ game.category }}</span>
+                        {% if game.badge %}
+                        <span class="text-[10px] font-bold text-pink-400 bg-pink-950/60 px-2 py-0.5 rounded border border-pink-800/40">{{ game.badge }}</span>
+                        {% endif %}
+                    </div>
+                    <h3 class="text-sm font-bold text-white truncate">{{ game.name }}</h3>
+                    <p class="text-[11px] text-slate-400 truncate mt-0.5">ডেলিভারি: {{ game.delivery_time }}</p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="bg-[#0d0f17] p-3 rounded-2xl border border-slate-800/80 flex items-center justify-between text-xs">
+                <div>
+                    <span class="text-slate-500 text-[10px] block">ইনপুট টাইপ</span>
+                    <span class="font-mono font-semibold text-retro-cyan uppercase">{{ game.input_type }}</span>
+                </div>
+                <div>
+                    <span class="text-slate-500 text-[10px] block">প্যাকেজ সংখ্যা</span>
+                    <span class="font-bold text-white">{{ game.package_count or 0 }} টি প্যাক</span>
+                </div>
+                <div>
+                    <span class="text-slate-500 text-[10px] block">অবস্থা</span>
+                    <span class="text-emerald-400 font-bold flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> সক্রিয়
+                    </span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 pt-2 border-t border-[#232942]">
+                <a href="/admin/products/{{ game.id }}/packages" 
+                   class="flex-1 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/40 py-2 rounded-xl text-xs font-bold text-center transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-gem text-xs"></i> প্যাকেজ ও দাম ({{ game.package_count or 0 }})
+                </a>
+
+                <form action="/admin/products/{{ game.id }}/delete" method="POST" onsubmit="return confirm('এই গেম এবং এর সকল প্যাকেজ মুছে ফেলতে চান?');" class="inline">
+                    <button type="submit" class="p-2 text-rose-400 hover:bg-rose-950/40 rounded-xl transition" title="Delete Game">
+                        <i class="fa-solid fa-trash text-xs"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<!-- Modal: Add New Game -->
+<div id="addGameModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-[#151928] border border-[#232942] rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative my-8">
+        <button type="button" onclick="document.getElementById('addGameModal').classList.add('hidden')" 
+                class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-gamepad text-retro-cyan"></i> নতুন গেম যোগ করুন
+        </h3>
+
+        <form action="/admin/products/add" method="POST" class="space-y-4 text-xs">
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">গেমের নাম (Game Name) *</label>
+                <input type="text" name="name" required placeholder="e.g. Free Fire (UID Top-Up)" 
+                       class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">স্লাগ URL (Slug) *</label>
+                    <input type="text" name="slug" required placeholder="e.g. free-fire-bd" 
+                           class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">ক্যাটাগরি (Category)</label>
+                    <input type="text" name="category" value="Games" 
+                           class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+                </div>
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">কভার ছবির URL (Image URL) *</label>
+                <input type="url" name="image_url" required placeholder="https://..." 
+                       class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">ব্যাজ (Badge Tag)</label>
+                    <input type="text" name="badge" placeholder="e.g. 🔥 হট চয়েস" 
+                           class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">ডেলিভারি সময়</label>
+                    <input type="text" name="delivery_time" value="২ - ১০ মিনিট" 
+                           class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">ইনপুট টাইপ</label>
+                    <select name="input_type" class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+                        <option value="uid">Player ID (UID)</option>
+                        <option value="uid_zone">UID + Zone ID</option>
+                        <option value="id_pass">ID & Password</option>
+                        <option value="email">Email / Phone</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">ইনপুট ফিল্ড লেবেল</label>
+                    <input type="text" name="input_label" value="Player ID (UID)" 
+                           class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+                </div>
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">প্লেসহোল্ডার টেক্সট</label>
+                <input type="text" name="input_placeholder" value="আপনার প্লেয়ার আইডি দিন" 
+                       class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">আইডি খুঁজে পাওয়ার নির্দেশিকা (Help text)</label>
+                <textarea name="instructions" rows="2" placeholder="গেমে কোথায় আইডি পাওয়া যাবে..." 
+                          class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white"></textarea>
+            </div>
+
+            <div class="pt-2 flex items-center justify-end gap-3">
+                <button type="button" onclick="document.getElementById('addGameModal').classList.add('hidden')" 
+                        class="px-4 py-2 rounded-xl text-slate-400 hover:text-white">বাতিল</button>
+                <button type="submit" 
+                        class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-5 py-2.5 rounded-xl shadow transition">
+                    সেভ করুন
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

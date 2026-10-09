@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+
+{% block title %}{{ settings.site_name }} - সবচেয়ে দ্রুততম ও সাশ্রয়ী গেম টপ-আপ প্ল্যাটফর্ম{% endblock %}
+
+{% block content %}
+
+<!-- Hero Banner & Promotional Slider -->
+<section class="relative pt-4 sm:pt-6 pb-8 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Banner Slider Container -->
+        <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-purple-500/20 shadow-2xl bg-gradient-to-r from-purple-950/60 via-[#151928] to-slate-900">
+            <!-- Background glow -->
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 sm:p-10 lg:p-14">
+                
+                <!-- Left: Headline & Call to action -->
+                <div class="lg:col-span-7 space-y-4 sm:space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-semibold uppercase tracking-wider">
+                        <span class="w-2 h-2 rounded-full bg-retro-cyan animate-pulse"></span>
+                        ১০০% ট্রাস্টেড ও ইনস্ট্যান্ট সার্ভিস
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black font-gaming tracking-wide uppercase text-white leading-tight">
+                        {{ settings.hero_title }}
+                    </h1>
+
+                    <p class="text-slate-300 text-sm sm:text-base sm:leading-relaxed max-w-xl mx-auto lg:mx-0">
+                        {{ settings.hero_subtitle }}
+                    </p>
+
+                    <!-- Trust Stats Pills -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-left">
+                        <div class="bg-[#151928]/80 border border-[#232942] rounded-xl p-3 flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-cyan-500/10 text-retro-cyan flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-bolt-lightning text-lg"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] text-slate-400">ডেলিভারি সময়</div>
+                                <div class="text-xs font-bold text-white">{{ settings.delivery_time }}</div>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#151928]/80 border border-[#232942] rounded-xl p-3 flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-pink-500/10 text-pink-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-shield-halved text-lg"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] text-slate-400">পেমেন্ট মেথড</div>
+                                <div class="text-xs font-bold text-white">bKash & Nagad</div>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#151928]/80 border border-[#232942] rounded-xl p-3 col-span-2 sm:col-span-1 flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                                <i class="fa-brands fa-whatsapp text-lg"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] text-slate-400">সাপোর্ট ২৪/৭</div>
+                                <div class="text-xs font-bold text-white font-mono">{{ settings.whatsapp_number }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#games-section" class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-bold px-7 py-3.5 rounded-xl shadow-lg shadow-purple-600/30 hover:shadow-cyan-500/30 transition-all text-sm group">
+                            <span>টপ-আপ শুরু করুন</span>
+                            <i class="fa-solid fa-arrow-down group-hover:translate-y-0.5 transition-transform"></i>
+                        </a>
+                        <a href="/track" class="inline-flex items-center gap-2 bg-[#151928] hover:bg-[#1e2338] text-slate-200 border border-slate-700 font-semibold px-6 py-3.5 rounded-xl text-sm transition">
+                            <i class="fa-solid fa-truck-fast text-retro-gold"></i>
+                            <span>অর্ডার ট্র্যাক করুন</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: Featured Game Card Spotlight -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-sm rounded-2xl overflow-hidden border-2 border-purple-500/30 shadow-2xl bg-[#151928] group">
+                        <div class="h-48 sm:h-56 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Free Fire BD Topup" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#151928] via-transparent to-black/40"></div>
+                            <span class="absolute top-3 left-3 bg-gradient-to-r from-red-600 to-pink-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                                🔥 সবচেয়ে জনপ্রিয়
+                            </span>
+                            <span class="absolute top-3 right-3 bg-black/70 backdrop-blur text-emerald-400 text-[11px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1">
+                                <i class="fa-solid fa-bolt"></i> ২ মিনিট
+                            </span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <h3 class="text-lg font-bold text-white flex items-center justify-between">
+                                <span>Free Fire (UID Top-Up)</span>
+                                <span class="text-xs text-retro-cyan bg-cyan-950/60 px-2.5 py-0.5 rounded-md border border-cyan-800">BD Server</span>
+                            </h3>
+                            <p class="text-xs text-slate-400">
+                                বিকাশ ও নগদ দিয়ে ইনস্ট্যান্ট ডায়মন্ড টপ-আপ। ২৫ ডায়মন্ড মাত্র ২২ টাকা থেকে শুরু!
+                            </p>
+                            <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                                <div>
+                                    <div class="text-[10px] text-slate-400">মূল্য শুরু</div>
+                                    <div class="text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-retro-gold to-amber-300">৳২২ টাকা</div>
+                                </div>
+                                <a href="/game/free-fire-bd" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-1.5">
+                                    <span>টপ-আপ করুন</span>
+                                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Live Delivery Notice / Trust Bar -->
+<section class="py-3 bg-[#0d0f17] border-y border-[#1e2338]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-slate-300 font-medium">লাইভ ডেলিভারি স্ট্যাটাস:</span>
+                <span class="text-emerald-400 font-semibold">সকল সার্ভার সচল ও দ্রুততম ডেলিভারি চলছে</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left text-purple-400"></i> গড় ডেলিভারি সময়: <strong class="text-white">৩ মিনিট</strong></span>
+                <span class="hidden sm:inline text-slate-600">|</span>
+                <span class="hidden sm:flex items-center gap-1.5"><i class="fa-solid fa-check-double text-retro-cyan"></i> সন্তুষ্টি রেটিং: <strong class="text-white">৯৯.৮%</strong></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Games & Products Section (Main Grid) -->
+<section id="games-section" class="py-12 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header with Search and Filter -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+            <div>
+                <div class="flex items-center gap-2 text-retro-cyan text-xs font-bold uppercase tracking-wider mb-2">
+                    <i class="fa-solid fa-gamepad"></i> আমাদের সকল আইটেম
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white font-gaming tracking-wide">
+                    জনপ্রিয় গেম ও গিফট কার্ডসমূহ
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">
+                    যে গেমে টপ-আপ করতে চান সেটি সিলেক্ট করুন এবং সরাসরি প্লেয়ার আইডি দিয়ে অর্ডার সম্পন্ন করুন।
+                </p>
+            </div>
+
+            <!-- Search Box -->
+            <div class="relative w-full md:w-72">
+                <input type="text" id="gameSearchInput" placeholder="গেম খুঁজুন (Free Fire, PUBG...)" 
+                       class="w-full bg-[#151928] border border-[#232942] focus:border-purple-500 rounded-xl px-4 py-2.5 pl-10 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none transition">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-xs"></i>
+            </div>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-6 scrollbar-none" id="categoryFilters">
+            <button class="category-btn active px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md transition" data-category="all">
+                সকল গেম (All)
+            </button>
+            {% for cat in categories %}
+            <button class="category-btn px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-[#151928] hover:bg-[#1e2338] text-slate-300 border border-[#232942] transition" data-category="{{ cat }}">
+                {{ cat }}
+            </button>
+            {% endfor %}
+        </div>
+
+        <!-- Games Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6" id="gamesGrid">
+            {% for game in games %}
+            <div class="game-card group bg-[#151928] hover:bg-[#1a1f33] border border-[#232942] hover:border-purple-500/50 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-900/20 flex flex-col"
+                 data-name="{{ game.name | lower }}" 
+                 data-category="{{ game.category }}">
+                
+                <!-- Game Cover Image -->
+                <div class="relative aspect-[4/3] overflow-hidden bg-slate-900">
+                    <img src="{{ game.image_url }}" 
+                         alt="{{ game.name }}" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#151928] via-transparent to-black/30"></div>
+                    
+                    <!-- Badge -->
+                    {% if game.badge %}
+                    <span class="absolute top-2.5 left-2.5 bg-gradient-to-r from-pink-600 to-purple-600 text-white text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow">
+                        {{ game.badge }}
+                    </span>
+                    {% endif %}
+
+                    <!-- Delivery time -->
+                    <span class="absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-sm text-retro-cyan text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md border border-cyan-900/50 flex items-center gap-1">
+                        <i class="fa-solid fa-bolt text-[9px]"></i> {{ game.delivery_time }}
+                    </span>
+                </div>
+
+                <!-- Game Card Body -->
+                <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] font-semibold text-purple-400 uppercase tracking-wider">{{ game.category }}</span>
+                        <h3 class="text-sm sm:text-base font-bold text-white group-hover:text-retro-cyan transition-colors line-clamp-1">
+                            {{ game.name }}
+                        </h3>
+                        <p class="text-[11px] text-slate-400 line-clamp-2 mt-1">
+                            {{ game.description or 'ইনস্ট্যান্ট ডেলিভারি ও নিশ্চিত নিরাপত্তা।' }}
+                        </p>
+                    </div>
+
+                    <div class="pt-2 border-t border-[#232942] flex items-center justify-between">
+                        <span class="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ইনস্ট্যান্ট
+                        </span>
+                        <a href="/game">{{ game.slug }}</a>
+                        <a href="/game/{{ game.slug }}" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow transition">
+                            <span>টপ-আপ</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- No Games Found Notice -->
+        <div id="noGamesFound" class="hidden text-center py-12 text-slate-400">
+            <i class="fa-solid fa-circle-question text-3xl mb-2 text-slate-500"></i>
+            <p class="text-sm font-semibold">কোনো গেম খুঁজে পাওয়া যায়নি।</p>
+            <p class="text-xs text-slate-500 mt-1">অন্য কোনো নাম দিয়ে সার্চ করুন অথবা সকল ক্যাটাগরি দেখুন।</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- How to Top-Up (3 Easy Steps) -->
+<section class="py-12 bg-[#0d0f17] border-y border-[#1e2338]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <span class="text-xs font-bold text-retro-cyan uppercase tracking-wider">সহজ নির্দেশিকা</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white font-gaming tracking-wide mt-1">
+                কীভাবে ৩টি সহজ ধাপে টপ-আপ করবেন?
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">
+                মাত্র ১ মিনিটে বিকাশ বা নগদ দিয়ে টপ-আপ সম্পন্ন করার নিয়ম
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Step 1 -->
+            <div class="bg-[#151928] border border-[#232942] rounded-2xl p-6 relative overflow-hidden group hover:border-purple-500/40 transition">
+                <span class="font-gaming text-6xl font-black text-purple-950 absolute -top-2 right-3 pointer-events-none group-hover:text-purple-900/50 transition">01</span>
+                <div class="w-12 h-12 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center text-xl mb-4 border border-purple-500/30">
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+                <h3 class="text-base font-bold text-white mb-2">১. প্লেয়ার আইডি দিন</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    পছন্দের গেম সিলেক্ট করুন এবং আপনার সঠিক প্লেয়ার আইডি (UID) অথবা ক্যারেক্টার আইডি বসান।
+                </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="bg-[#151928] border border-[#232942] rounded-2xl p-6 relative overflow-hidden group hover:border-cyan-500/40 transition">
+                <span class="font-gaming text-6xl font-black text-cyan-950 absolute -top-2 right-3 pointer-events-none group-hover:text-cyan-900/50 transition">02</span>
+                <div class="w-12 h-12 rounded-xl bg-cyan-600/20 text-retro-cyan flex items-center justify-center text-xl mb-4 border border-cyan-500/30">
+                    <i class="fa-solid fa-gem"></i>
+                </div>
+                <h3 class="text-base font-bold text-white mb-2">২. প্যাকেজ নির্বাচন করুন</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    যে পরিমাণ ডায়মন্ড, ইউসি বা মেম্বারশিপ নিতে চান সেটি সিলেক্ট করুন। প্যাকেজের মূল্য প্রদর্শিত হবে।
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="bg-[#151928] border border-[#232942] rounded-2xl p-6 relative overflow-hidden group hover:border-pink-500/40 transition">
+                <span class="font-gaming text-6xl font-black text-pink-950 absolute -top-2 right-3 pointer-events-none group-hover:text-pink-900/50 transition">03</span>
+                <div class="w-12 h-12 rounded-xl bg-pink-600/20 text-pink-400 flex items-center justify-center text-xl mb-4 border border-pink-500/30">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                </div>
+                <h3 class="text-base font-bold text-white mb-2">৩. পেমেন্ট ও TrxID দিন</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    আমাদের বিকাশ বা নগদ নাম্বারে (<strong class="text-white font-mono">{{ settings.bkash_number }}</strong>) Send Money করে TrxID দিয়ে সাবমিট করলেই ২-৫ মিনিটে টপ-আপ চলে যাবে!
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Payment Methods Highlight & Contact Banner -->
+<section class="py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-purple-900/40 via-[#151928] to-slate-900 border border-[#232942] rounded-3xl p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left">
+                <span class="text-xs font-bold text-retro-cyan uppercase tracking-wider">সহজ ও নিরাপদ পেমেন্ট</span>
+                <h3 class="text-xl sm:text-2xl font-bold text-white">
+                    বিকাশ এবং নগদ এ তাত্ক্ষণিক পেমেন্ট সুবিধা
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-400">
+                    বিকাশ বা নগদ নম্বর: <strong class="text-white font-mono bg-black/40 px-2 py-0.5 rounded">{{ settings.bkash_number }}</strong>
+                </p>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="https://wa.me/88{{ settings.whatsapp_number }}?text=Hello%20Retro%20Topup%2C%20I%20have%20a%20question" target="_blank"
+                   class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-xl text-xs sm:text-sm shadow-lg shadow-emerald-600/30 transition">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>হোয়াটসঅ্যাপে হেল্প নিন</span>
+                </a>
+                <a href="/track" class="inline-flex items-center gap-2 bg-[#1f243b] hover:bg-[#2b3252] text-white font-semibold px-5 py-3 rounded-xl text-xs sm:text-sm border border-slate-700 transition">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>অর্ডার ট্র্যাক</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Frequently Asked Questions (FAQ) -->
+<section class="py-10 bg-[#0d0f17]/60">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <span class="text-xs font-bold text-retro-cyan uppercase tracking-wider">সাধারণ প্রশ্ন ও উত্তর</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white font-gaming mt-1">সচরাচর জিজ্ঞাসিত প্রশ্ন</h2>
+        </div>
+
+        <div class="space-y-3">
+            <div class="bg-[#151928] border border-[#232942] rounded-xl p-4">
+                <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question text-retro-cyan"></i> অর্ডার করার পর কতক্ষণের মধ্যে টপ-আপ পাবো?
+                </h4>
+                <p class="text-xs text-slate-400 mt-2 pl-5 leading-relaxed">
+                    অর্ডার সম্পন্ন করার ২ থেকে ১০ মিনিটের মধ্যে আপনার প্লেয়ার আইডিতে টপ-আপ চলে যাবে। সার্ভার লোড বেশি থাকলে সর্বোচ্চ ১৫ মিনিট সময় লাগতে পারে।
+                </p>
+            </div>
+
+            <div class="bg-[#151928] border border-[#232942] rounded-xl p-4">
+                <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question text-retro-cyan"></i> বিকাশ বা নগদ দিয়ে টাকা পাঠানোর নিয়ম কী?
+                </h4>
+                <p class="text-xs text-slate-400 mt-2 pl-5 leading-relaxed">
+                    আমাদের দেওয়া বিকাশ বা নগদ নাম্বারে ({{ settings.bkash_number }}) 'Send Money' করুন। এরপর যে নম্বর থেকে টাকা পাঠিয়েছেন এবং ফিরতি মেসেজের ট্রানজেকশন আইডি (TrxID) দিয়ে অর্ডার কনফার্ম করুন।
+                </p>
+            </div>
+
+            <div class="bg-[#151928] border border-[#232942] rounded-xl p-4">
+                <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question text-retro-cyan"></i> কোনো সমস্যা হলে কোথায় যোগাযোগ করবো?
+                </h4>
+                <p class="text-xs text-slate-400 mt-2 pl-5 leading-relaxed">
+                    আমাদের অফিসিয়াল WhatsApp নাম্বারে (<strong class="text-emerald-400">{{ settings.whatsapp_number }}</strong>) ২৪/৭ যেকোনো সময় মেসেজ দিতে পারেন। আমাদের টিম দ্রুত আপনার সমস্যা সমাধান করে দেবে।
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Live Search and Filter
+    const searchInput = document.getElementById('gameSearchInput');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const gameCards = document.querySelectorAll('.game-card');
+    const noGamesFound = document.getElementById('noGamesFound');
+
+    let currentCategory = 'all';
+
+    function filterGames() {
+        const query = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        gameCards.forEach(card => {
+            const name = card.getAttribute('data-name');
+            const category = card.getAttribute('data-category');
+
+            const matchesSearch = !query || name.includes(query);
+            const matchesCat = (currentCategory === 'all') || (category === currentCategory);
+
+            if (matchesSearch && matchesCat) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (visibleCount === 0) {
+            noGamesFound.classList.remove('hidden');
+        } else {
+            noGamesFound.classList.add('hidden');
+        }
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', filterGames);
+    }
+
+    categoryButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            categoryButtons.forEach(b => {
+                b.classList.remove('active', 'bg-gradient-to-r', 'from-purple-600', 'to-indigo-600', 'text-white', 'shadow-md');
+                b.classList.add('bg-[#151928]', 'text-slate-300');
+            });
+            btn.classList.add('active', 'bg-gradient-to-r', 'from-purple-600', 'to-indigo-600', 'text-white', 'shadow-md');
+            btn.classList.remove('bg-[#151928]', 'text-slate-300');
+
+            currentCategory = btn.getAttribute('data-category');
+            filterGames();
+        });
+    });
+</script>
+{% endblock %}

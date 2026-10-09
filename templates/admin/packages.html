@@ -1,0 +1,147 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ game.name }} প্যাকেজসমূহ - অ্যাডমিন প্যানেল{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    
+    <!-- Breadcrumb & Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-2 text-xs text-slate-400 mb-1">
+                <a href="/admin/products" class="hover:text-white transition">গেমসমূহ</a>
+                <span>/</span>
+                <span class="text-retro-cyan">{{ game.name }}</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white font-gaming tracking-wide flex items-center gap-3">
+                <span>{{ game.name }} প্যাকেজ তালিকা</span>
+                <span class="text-xs font-sans text-purple-400 bg-purple-950/60 border border-purple-800/40 px-2.5 py-1 rounded-lg">
+                    {{ packages | length }} টি প্যাক
+                </span>
+            </h1>
+        </div>
+
+        <button type="button" onclick="document.getElementById('addPackageModal').classList.remove('hidden')" 
+                class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-lg transition">
+            <i class="fa-solid fa-plus"></i> নতুন প্যাকেজ যোগ করুন
+        </button>
+    </div>
+
+    <!-- Packages Table -->
+    <div class="bg-[#151928] border border-[#232942] rounded-3xl shadow-xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+                <thead class="bg-[#0d0f17] text-slate-400 uppercase text-[10px] tracking-wider border-b border-[#232942]">
+                    <tr>
+                        <th class="p-3.5">প্যাকেজের নাম</th>
+                        <th class="p-3.5">বর্তমান মূল্য (৳)</th>
+                        <th class="p-3.5">ডিসকাউন্ট পূর্বের মূল্য (৳)</th>
+                        <th class="p-3.5">ব্যাজ (Badge)</th>
+                        <th class="p-3.5">স্টক অবস্থা</th>
+                        <th class="p-3.5 text-right">কার্যক্রম</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-[#232942]/60">
+                    {% for pkg in packages %}
+                    <tr class="hover:bg-[#1a1f33] transition">
+                        <td class="p-3.5 font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-gem text-purple-400 text-xs"></i>
+                            <span>{{ pkg.name }}</span>
+                        </td>
+                        <td class="p-3.5 font-mono font-bold text-retro-gold text-sm">
+                            ৳{{ pkg.price | int }}
+                        </td>
+                        <td class="p-3.5 font-mono text-slate-500">
+                            {% if pkg.original_price %}৳{{ pkg.original_price | int }}{% else %}-{% endif %}
+                        </td>
+                        <td class="p-3.5">
+                            {% if pkg.badge %}
+                            <span class="bg-gradient-to-r from-pink-600 to-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                {{ pkg.badge }}
+                            </span>
+                            {% else %}-{% endif %}
+                        </td>
+                        <td class="p-3.5">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold 
+                                {% if pkg.in_stock %}bg-emerald-950 text-emerald-300 border border-emerald-800
+                                {% else %}bg-rose-950 text-rose-300 border border-rose-800{% endif %}">
+                                {% if pkg.in_stock %}ইন স্টক{% else %}স্টক আউট{% endif %}
+                            </span>
+                        </td>
+                        <td class="p-3.5 text-right">
+                            <div class="inline-flex items-center gap-2">
+                                <form action="/admin/packages/{{ pkg.id }}/delete" method="POST" onsubmit="return confirm('এই প্যাকেজটি মুছে ফেলতে চান?');" class="inline">
+                                    <input type="hidden" name="game_id" value="{{ game.id }}">
+                                    <button type="submit" class="p-1.5 text-rose-400 hover:bg-rose-950/40 rounded-lg transition" title="Delete Package">
+                                        <i class="fa-solid fa-trash text-xs"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="p-8 text-center text-slate-500">
+                            কোনো প্যাকেজ নেই। উপরের "নতুন প্যাকেজ যোগ করুন" বাটনে ক্লিক করে প্যাকেজ তৈরি করুন।
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal: Add Package -->
+<div id="addPackageModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-[#151928] border border-[#232942] rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative">
+        <button type="button" onclick="document.getElementById('addPackageModal').classList.add('hidden')" 
+                class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-gem text-purple-400"></i> নতুন প্যাকেজ যোগ করুন ({{ game.name }})
+        </h3>
+
+        <form action="/admin/packages/add" method="POST" class="space-y-4 text-xs">
+            <input type="hidden" name="game_id" value="{{ game.id }}">
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">প্যাকেজের নাম *</label>
+                <input type="text" name="name" required placeholder="e.g. 115 Diamonds বা 60 UC" 
+                       class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">বিক্রয় মূল্য (৳) *</label>
+                    <input type="number" step="any" name="price" required placeholder="e.g. 85" 
+                           class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white font-mono">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">আগের মূল্য (৳)</label>
+                    <input type="number" step="any" name="original_price" placeholder="e.g. 95" 
+                           class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white font-mono">
+                </div>
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-300 mb-1">স্পেশাল ব্যাজ (Badge)</label>
+                <input type="text" name="badge" placeholder="e.g. 🔥 বেস্ট ভ্যালু, +15 বোনাস" 
+                       class="w-full bg-[#0d0f17] border border-[#232942] rounded-xl px-3 py-2 text-white">
+            </div>
+
+            <div class="pt-2 flex items-center justify-end gap-3">
+                <button type="button" onclick="document.getElementById('addPackageModal').classList.add('hidden')" 
+                        class="px-4 py-2 rounded-xl text-slate-400 hover:text-white">বাতিল</button>
+                <button type="submit" 
+                        class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-5 py-2 rounded-xl shadow transition">
+                    যোগ করুন
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
