@@ -132,11 +132,11 @@ def init_db():
     )
     """)
 
-    # Seed Admin (admin / admin123)
+    # Seed Admin (admin / shafin69)
     cursor.execute("SELECT id FROM admins WHERE username = 'admin'")
     if not cursor.fetchone():
         cursor.execute("INSERT INTO admins (username, password_hash) VALUES (?, ?)", 
-                       ("admin", hash_password("admin123")))
+                       ("admin", hash_password("shafin69")))
 
     # Seed Payment Methods with requested numbers (bKash & Nagad: 01925915240)
     cursor.execute("SELECT COUNT(*) as cnt FROM payment_methods")
